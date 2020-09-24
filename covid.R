@@ -2,7 +2,6 @@
 # Hierchical Cluster Analysis with COVID-19 Survey Data
 
 # PRELIMINARY #################################################################
-setwd("/Users/stacibell/Documents/data/kaggle/covid-19-tracker-master/data")
 
 # Libraries
 library(dplyr)
