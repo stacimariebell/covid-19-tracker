@@ -54,22 +54,21 @@ for (row in 1:length(usa$i12_health_1)){
   else {
     usa$mask_dummy[row] <- 0 }
 }
-# Trying it out with age first
+# Logistic Regression: i12_health_1 ~ age
 plot(jitter(mask_dummy, 0.08) ~ age, data=usa) # scatterplot of y by x=age
 gam.fit <- gam(mask_dummy ~ s(age), family = binomial,
-               data = usa)
-curve(predict(gam.fit, data.frame(age=x), type="resp"), add=TRUE)
-fit <- glm(mask_dummy ~ age, family=binomial, data=usa) # link=logit is default
-curve(predict(fit, data.frame(age=x), type="resp"), add=TRUE) # logistic graph
-summary(fit)
-confint(fit)
+               data = usa) # fit generalized additive model 
+curve(predict(gam.fit, data.frame(age=x), type="resp"), add=TRUE) # add GAM curve to scatterplot
+fit <- glm(mask_dummy ~ age, family=binomial, data=usa) # fit generalized linear model
+curve(predict(fit, data.frame(age=x), type="resp"), add=TRUE) # add logistic regression to curve
+summary(fit) # print logistic reg summary
+confint(fit) # print confidence intervals for logistic regression
+
+# Predict probability of Always wearing a mask using various age inputs
 predict(fit, data.frame(age = 21), type="response") # estimated P (x=21)
 predict(fit, data.frame(age = 48), type="response") # estimated P (x=48)
-predict(fit, data.frame(age = 70), type = "response") # P(x=70)
+predict(fit, data.frame(age = 70), type = "response") # estimated P (x=70)
 
 library(car)
 Anova(fit)
-# Above, I have a logistic regression model using age as the predictor
-# of if an individual will Always wear a mask or not.
-# Below I will evaluate that predictor.
-hist(usa$age, breaks = 30) # not normally distributed. 
+
